@@ -11,4 +11,6 @@ ENV \
     MYSQL_RANDOM_ROOT_PASSWORD=yes \
     REGIONCNMYSQL_VERSION=$VERSION
 
+COPY ./cnf/docker.cnf /etc/mysql/conf.d/docker.cnf
+
 COPY ./sql-scripts/ /docker-entrypoint-initdb.d/

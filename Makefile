@@ -9,11 +9,13 @@ clean:
 	docker image rm quay.io/yingzhuo/$(NAME):$(VERSION) &> /dev/null || true
 	docker image rm quay.io/yingzhuo/$(NAME):latest &> /dev/null || true
 
-release:
+build:
 	docker image build -t quay.io/yingzhuo/$(NAME):$(VERSION) --build-arg VERSION=$(VERSION) $(CURDIR)
+	docker image tag  quay.io/yingzhuo/$(NAME):$(VERSION) quay.io/yingzhuo/$(NAME):latest
+
+release: build
 	docker login --username=yingzhuo --password="${QUAY_PASSWORD}" quay.io &> /dev/null
 	docker image push quay.io/yingzhuo/$(NAME):$(VERSION)
-	docker image tag  quay.io/yingzhuo/$(NAME):$(VERSION) quay.io/yingzhuo/$(NAME):latest
 	docker image push quay.io/yingzhuo/$(NAME):latest
 	docker logout quay.io &> /dev/null
 
@@ -22,4 +24,4 @@ github: clean
 	git commit -m "$(TIMESTAMP)"
 	git push
 
-.PHONY: default clean release github
+.PHONY: default clean build release github
