@@ -6,18 +6,18 @@ default:
 	@echo "no default target" && false
 
 clean:
-	docker image rm quay.io/yingzhuo/$(NAME):$(VERSION) &> /dev/null || true
-	docker image rm quay.io/yingzhuo/$(NAME):latest &> /dev/null || true
+	@docker image rm registry.cn-shanghai.aliyuncs.com/yingzhor/$(NAME):$(VERSION) &> /dev/null || true
+	@docker image rm registry.cn-shanghai.aliyuncs.com/yingzhor/$(NAME):latest     &> /dev/null || true
 
 build:
-	docker image build -t quay.io/yingzhuo/$(NAME):$(VERSION) --build-arg VERSION=$(VERSION) $(CURDIR)
-	docker image tag  quay.io/yingzhuo/$(NAME):$(VERSION) quay.io/yingzhuo/$(NAME):latest
+	docker image build -t registry.cn-shanghai.aliyuncs.com/yingzhor/$(NAME):$(VERSION) --build-arg VERSION=$(VERSION) $(CURDIR)
+	docker image tag      registry.cn-shanghai.aliyuncs.com/yingzhor/$(NAME):$(VERSION) registry.cn-shanghai.aliyuncs.com/yingzhor/$(NAME):latest
 
 release: build
-	docker login --username=yingzhuo --password="${QUAY_PASSWORD}" quay.io &> /dev/null
-	docker image push quay.io/yingzhuo/$(NAME):$(VERSION)
-	docker image push quay.io/yingzhuo/$(NAME):latest
-	docker logout quay.io &> /dev/null
+	docker login --username=yingzhor@gmail.com --password="${ALIYUN_PASSWORD}" registry.cn-shanghai.aliyuncs.com
+	docker image push registry.cn-shanghai.aliyuncs.com/yingzhor/$(NAME):$(VERSION)
+	docker image push registry.cn-shanghai.aliyuncs.com/yingzhor/$(NAME):latest
+	docker logout registry.cn-shanghai.aliyuncs.com &> /dev/null
 
 github: clean
 	git add .
